@@ -5,6 +5,7 @@
 	Website: http://www.easydarwin.org
 */
 #include <stdio.h>
+#include <cstdarg>
 
 #include "EasyRedisModule.h"
 #include "OSHeaders.h"

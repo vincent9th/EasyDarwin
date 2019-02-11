@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include "SafeStdLib.h"
 #include "defaultPaths.h"
-#ifndef __MacOSX__ 
+#if !defined (__MacOSX__) && !defined (_PLATFORM_JZ)
 #include "getopt.h"
 #endif
 

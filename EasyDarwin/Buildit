@@ -5,6 +5,7 @@ usage()
 	echo "0. clean up ./Buildit clean"
 	echo "1. build 32bit program ./Buildit i386 [target in i386]"	
 	echo "2. build 64bit program ./Buildit x64 [target in x64]"		
+	echo "3. build 64bit program ./Buildit jz [target in jz]"		
 	#echo "3. build Debug program ./Buildit debug [target in Debug]"	
 }
 
@@ -13,32 +14,55 @@ build()
 	if [ "$*" = "clean" ] ; then
 		make -f nbproject/Makefile-i386.mk QMAKE= SUBPROJECTS= .clean-conf
 		make -f nbproject/Makefile-x64.mk QMAKE= SUBPROJECTS= .clean-conf
+		make -f nbproject/Makefile-jz.mk QMAKE= SUBPROJECTS= .clean-conf
 		#make -f nbproject/Makefile-Debug.mk QMAKE= SUBPROJECTS= .clean-conf
 	elif [ "$*" = "x64" ] ; then
-		make -f nbproject/Makefile-x64.mk QMAKE= SUBPROJECTS= .build-conf
+		make -f nbproject/Makefile-x64.mk QMAKE= SUBPROJECTS= .build-conf -j8
 	elif [ "$*" = "i386" ] ; then
-	 	make -f nbproject/Makefile-i386.mk QMAKE= SUBPROJECTS= .build-conf
+	 	make -f nbproject/Makefile-i386.mk QMAKE= SUBPROJECTS= .build-conf -j8
+	elif [ "$*" = "jz" ] ; then
+	 	make -f nbproject/Makefile-jz.mk QMAKE= SUBPROJECTS= .build-conf
 	elif [ "$*" = "debug" ] ; then
 	 	make -f nbproject/Makefile-Debug.mk QMAKE= SUBPROJECTS= .build-conf
 	fi
 }
 
 
-if [ "$*" = "clean" -o "$*" = "x64" -o "$*" = "i386" ] ; then 
+if [ "$*" = "clean" -o "$*" = "x64" -o "$*" = "i386" -o "$*" = "jz" ] ; then 
 	cd ../CommonUtilitiesLib
 	build $1
+	if [ $? -ne 0 ]; then
+		echo "build CommonUtilitiesLib fail"
+		exit
+	fi
 	
 	cd ../EasyRedisClient
 	build $1	
+	if [ $? -ne 0 ]; then
+		echo "build EasyRedisClient fail"
+		exit
+	fi
 
 	cd ../EasyProtocol/jsoncpp
 	build $1    
+	if [ $? -ne 0 ]; then
+		echo "build jsoncpp fail"
+		exit
+	fi
 
 	cd ../EasyProtocol
 	build $1
+	if [ $? -ne 0 ]; then
+		echo "build EasyProtocol fail"
+		exit
+	fi
 	
 	cd ../../EasyDarwin
 	build $1
+	if [ $? -ne 0 ]; then
+		echo "build EasyDarwin fail"
+		exit
+	fi
 else
 	usage;
 fi

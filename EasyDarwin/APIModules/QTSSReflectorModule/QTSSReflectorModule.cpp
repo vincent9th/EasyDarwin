@@ -752,7 +752,7 @@ ReflectorSession* DoSessionSetup(QTSS_StandardRTSP_Params* inParams, QTSS_Attrib
 	const char* chnNum = parList.DoFindCGIValueForParam(EASY_TAG_CHANNEL);
 	if (chnNum)
 	{
-		theChannelNum = stoi(chnNum);
+		theChannelNum = atoi(chnNum); //stoi(chnNum);
 	}
 
 	StrPtrLen theFullPath(theFileNameStr);
@@ -908,7 +908,7 @@ QTSS_Error DoAnnounce(QTSS_StandardRTSP_Params* inParams)
 
 	//
 	// Eventually, we should really require access control before we do this.
-	//qtss_printf("QTSSReflectorModule:DoAnnounce\n");
+	qtss_printf("QTSSReflectorModule:DoAnnounce\n");
 	//
 	// Get the full path to this file
 	char* theFileNameStr = NULL;
@@ -931,7 +931,7 @@ QTSS_Error DoAnnounce(QTSS_StandardRTSP_Params* inParams)
 	const char* chnNum = parList.DoFindCGIValueForParam(EASY_TAG_CHANNEL);
 	if (chnNum)
 	{
-		theChannelNum = stoi(chnNum);
+		theChannelNum = atoi(chnNum); //stoi(chnNum);
 	}
 
 	char theStreamName[QTSS_MAX_NAME_LENGTH] = { 0 };
@@ -992,7 +992,7 @@ QTSS_Error DoAnnounce(QTSS_StandardRTSP_Params* inParams)
 	theLen = sizeof(theRequestBody);
 	theErr = QTSS_GetValue(inParams->inRTSPRequest, sRequestBodyAttr, 0, &theRequestBody, &theLen);
 
-	//qtss_printf("QTSSReflectorModule:DoAnnounce theRequestBody =%s\n",theRequestBody);
+	qtss_printf("QTSSReflectorModule:DoAnnounce theRequestBody =%s\n",theRequestBody);
 	if (theErr != QTSS_NoErr)
 	{
 		//
@@ -1116,7 +1116,7 @@ QTSS_Error DoAnnounce(QTSS_StandardRTSP_Params* inParams)
 	CSdpCache::GetInstance()->setSdpMap(theStreamName, sdpContext);
 
 
-	//qtss_printf("QTSSReflectorModule:DoAnnounce SendResponse OK=200\n");
+	qtss_printf("QTSSReflectorModule:DoAnnounce SendResponse OK=200\n");
 
 	return QTSS_SendStandardRTSPResponse(inParams->inRTSPRequest, inParams->inClientSession, 0);
 }
